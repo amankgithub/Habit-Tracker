@@ -1,0 +1,17 @@
+# Node
+node_modules/
+
+# Web build output
+dist/
+
+# Rust / Tauri build output
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# Claude Code project context (not for upload)
+CLAUDE.md
+**/CLAUDE.md
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
