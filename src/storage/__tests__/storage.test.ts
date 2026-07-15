@@ -72,7 +72,7 @@ describe('saveData', () => {
     const data = {
       habits: [],
       completions: [],
-      settings: { weekStartsOn: 1 as const, theme: 'dark' as const },
+      settings: { weekStartsOn: 1 as const, theme: 'dark' as const, reminders: [] },
     };
     await saveData(data);
     expect(invokeMock).toHaveBeenCalledWith('save_data', { json: JSON.stringify(data) });

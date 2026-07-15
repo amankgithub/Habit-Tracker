@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import '../styles/global.css';
 import { Dashboard } from '../components/Dashboard';
 import { useAppStore } from '../store/appStore';
+import { ensureNotificationPermission, startReminderLoop } from '../reminders/reminderService';
 
 /**
  * Milestone 4+5+6: real app entry point. Loads from the actual Tauri
@@ -30,6 +31,12 @@ function App() {
     window.addEventListener('focus', onFocus);
     return () => window.removeEventListener('focus', onFocus);
   }, [refreshToday]);
+
+  useEffect(() => {
+    ensureNotificationPermission();
+    const stopReminderLoop = startReminderLoop(() => useAppStore.getState().data.settings.reminders);
+    return stopReminderLoop;
+  }, []);
 
   if (!hasLoaded) {
     return (

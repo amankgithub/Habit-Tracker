@@ -60,6 +60,13 @@ export async function loadData(): Promise<LoadResult> {
     return { data: createEmptyAppData(), recoveredFromFallback: true, fallbackReason: 'invalid_shape' };
   }
 
+  // isValidAppData is structural-only and won't catch fields missing from
+  // older data.json files (e.g. reminders added in a later milestone) —
+  // backfill defaults here rather than in validation.
+  if (!Array.isArray(parsed.settings.reminders)) {
+    parsed.settings.reminders = [];
+  }
+
   return { data: parsed, recoveredFromFallback: false };
 }
 

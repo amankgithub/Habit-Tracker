@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { addMonths } from 'date-fns';
-import type { AppData, ScheduleConfig, ScheduleType } from '../domain/types';
+import type { AppData, ReminderRule, ScheduleConfig, ScheduleType } from '../domain/types';
 import { createEmptyAppData } from '../domain/types';
 import {
   archiveHabit as domainArchiveHabit,
@@ -12,6 +12,7 @@ import {
   unarchiveHabit as domainUnarchiveHabit,
   updateHabitSchedule as domainUpdateSchedule,
 } from '../domain/habitActions';
+import { updateReminders as domainUpdateReminders } from '../domain/settingsActions';
 import { monthKey, todayISO } from '../domain/dateUtils';
 import { loadData, saveData } from '../storage/storage';
 
@@ -46,6 +47,7 @@ interface AppState {
   unarchiveHabit: (habitId: string) => void;
   deleteHabitPermanently: (habitId: string) => void;
   reorderHabits: (orderedHabitIds: string[]) => void;
+  updateReminders: (reminders: ReminderRule[]) => void;
 
   goToPreviousMonth: () => void;
   goToNextMonth: () => void;
@@ -122,6 +124,12 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   reorderHabits: (orderedHabitIds) => {
     const next = domainReorderHabits(get().data, orderedHabitIds);
+    set({ data: next });
+    schedulePersist(next);
+  },
+
+  updateReminders: (reminders) => {
+    const next = domainUpdateReminders(get().data, reminders);
     set({ data: next });
     schedulePersist(next);
   },

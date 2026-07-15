@@ -89,9 +89,19 @@ export interface CompletionRecord {
   date: ISODate;
 }
 
+/**
+ * A reminder fires an OS notification while the app is running (foreground
+ * or minimized) prompting the user to check today's habits. There is no
+ * background/closed-app delivery — see src/notifications/CLAUDE.md.
+ */
+export type ReminderRule =
+  | { id: string; kind: 'fixed'; time: string } // "HH:mm", 24h
+  | { id: string; kind: 'interval'; startTime: string; endTime: string; intervalMinutes: number };
+
 export interface AppSettings {
   weekStartsOn: 1; // Monday, fixed constant per product decision
   theme: 'dark';
+  reminders: ReminderRule[];
 }
 
 export interface AppData {
@@ -107,6 +117,7 @@ export function createEmptyAppData(): AppData {
     settings: {
       weekStartsOn: 1,
       theme: 'dark',
+      reminders: [],
     },
   };
 }

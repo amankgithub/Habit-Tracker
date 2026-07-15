@@ -2,6 +2,8 @@ export * from './types';
 export * from './dateUtils';
 export * from './completionCalculator';
 export * from './habitActions';
+export * from './settingsActions';
+export * from './reminders';
 export * from './scheduling/types';
 export * from './scheduling/strategies';
 export * from './scheduling/resolver';
